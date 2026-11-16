@@ -70,6 +70,15 @@ python pom-compare.py <target-dir> <skill-path>/catalog.json
 
 **Do not stop until the audit returns results.** If catalog is stale, remind the user to consider updating it when a pause occurs. The catalog is behind an authorization wall, do not download it automatically, have the user download it and verify it is valid json before replacing the stale copy.
 
+**Final audit report (required):** When presenting results to the user — including audit-only runs — always include the status key from `pom-compare.py` output (do not drop it when reformatting into tables or summaries):
+
+- **exact match** — POM already on the Lightwell remediation version (e.g. `1.2.11.rhlw-00001`)
+- **needs update** — same base version; community/older rhlw can move to catalog remediation
+- **base-version mismatch** — artifact in catalog, but not at this POM base version
+- **not in catalog** — artifact not present in catalog
+
+Then list every dependency with one of those statuses. A remediation match that is not yet applied is **needs update**, not exact match.
+
 ### Step 4: Scope confirmation
 
 Determine based on the audit if there are profiles avaialble that might be selected as part of a production build. If there are, ask the user if they want to update profile dependencies as well. Otherwise just change the default properties and any obvious prod profiles.
